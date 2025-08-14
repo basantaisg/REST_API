@@ -10,11 +10,14 @@ import {
   Post,
   Put,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Post as PostInterface } from './interfaces/post.interface';
 import { UpdatePostDto } from './dtos/update-post.dto';
 import { CreatePostDto } from './dtos/create-post.dto';
+import { PostExistsPipe } from './pipes/post-exists.pipe';
 
 @Controller('posts')
 export class PostsController {
@@ -33,7 +36,7 @@ export class PostsController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseIntPipe, PostExistsPipe) id: number) {
     return this.postService.findOne(id);
   }
 
@@ -44,8 +47,16 @@ export class PostsController {
   }
 
   @Put(':id')
+  @UsePipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      disableErrorMessages: false,
+    }), // for local!
+  )
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe, PostExistsPipe) id: number,
     @Body() updatePostData: UpdatePostDto,
   ) {
     return this.postService.update(id, updatePostData);
@@ -53,7 +64,7 @@ export class PostsController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  delete(@Param('id', ParseIntPipe) id: number) {
+  delete(@Param('id', ParseIntPipe, PostExistsPipe) id: number) {
     return this.postService.delete(id);
   }
 }

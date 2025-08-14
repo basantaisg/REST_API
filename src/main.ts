@@ -11,7 +11,7 @@ async function bootstrap() {
       transform: true,
       disableErrorMessages: false,
     }),
-  );
+  ); // for global pipes !
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
