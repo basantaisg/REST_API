@@ -59,7 +59,7 @@ export class PostsService {
     if (postIndex === -1)
       throw new NotFoundException(`Post with id: ${id} not found!`);
 
-    return this.posts.splice(postIndex, 1);
+    return { message: `Post with id: ${id} Successfully deleted!` };
   }
 
   private genNextId(): number {
