@@ -1,5 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Post } from './interfaces/post.interface';
+import { UpdatePostDto } from './dtos/update-post.dto';
+import { CreatePostDto } from './dtos/create-post.dto';
 
 @Injectable()
 export class PostsService {
@@ -26,7 +28,7 @@ export class PostsService {
     return singlePost;
   }
 
-  create(createPostData: Omit<Post, 'id' | 'createdAt'>): Post {
+  create(createPostData: Omit<CreatePostDto, 'id' | 'createdAt'>): Post {
     const newPost: Post = {
       id: this.genNextId(),
       ...createPostData,
@@ -38,7 +40,7 @@ export class PostsService {
 
   update(
     id: number,
-    updatePostData: Partial<Omit<Post, 'id' | 'createdAt'>>,
+    updatePostData: Partial<Omit<UpdatePostDto, 'id' | 'createdAt'>>,
   ): Post {
     const currentPostIndexToEdit = this.posts.findIndex((p) => p.id === id);
 
