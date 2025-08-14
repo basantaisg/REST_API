@@ -39,14 +39,14 @@ export class PostsController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createPostData: Omit<CreatePostDto, 'id' | 'createdAt'>) {
+  create(@Body() createPostData: CreatePostDto) {
     return this.postService.create(createPostData);
   }
 
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updatePostData: Partial<Omit<UpdatePostDto, 'id' | 'createdAt'>>,
+    @Body() updatePostData: UpdatePostDto,
   ) {
     return this.postService.update(id, updatePostData);
   }

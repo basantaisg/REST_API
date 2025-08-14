@@ -28,7 +28,7 @@ export class PostsService {
     return singlePost;
   }
 
-  create(createPostData: Omit<CreatePostDto, 'id' | 'createdAt'>): Post {
+  create(createPostData: CreatePostDto): Post {
     const newPost: Post = {
       id: this.genNextId(),
       ...createPostData,
@@ -38,10 +38,7 @@ export class PostsService {
     return newPost;
   }
 
-  update(
-    id: number,
-    updatePostData: Partial<Omit<UpdatePostDto, 'id' | 'createdAt'>>,
-  ): Post {
+  update(id: number, updatePostData: UpdatePostDto): Post {
     const currentPostIndexToEdit = this.posts.findIndex((p) => p.id === id);
 
     if (currentPostIndexToEdit == -1)
