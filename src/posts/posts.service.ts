@@ -54,6 +54,14 @@ export class PostsService {
     return this.posts[currentPostIndexToEdit];
   }
 
+  delete(id: number) {
+    const postIndex = this.posts.findIndex((p) => p.id === id);
+    if (postIndex === -1)
+      throw new NotFoundException(`Post with id: ${id} not found!`);
+
+    return this.posts.splice(postIndex, 1);
+  }
+
   private genNextId(): number {
     return this.posts.length > 0
       ? Math.max(...this.posts.map((post) => post.id)) + 1
