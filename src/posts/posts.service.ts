@@ -25,4 +25,38 @@ export class PostsService {
 
     return singlePost;
   }
+
+  create(createPostData: Omit<Post, 'id' | 'createdAt'>): Post {
+    const newPost: Post = {
+      id: this.genNextId(),
+      ...createPostData,
+      createdAt: new Date(),
+    };
+    this.posts.push(newPost);
+    return newPost;
+  }
+
+  update(
+    id: number,
+    updatePostData: Partial<Omit<Post, 'id' | 'createdAt'>>,
+  ): Post {
+    const currentPostIndexToEdit = this.posts.findIndex((p) => p.id === id);
+
+    if (currentPostIndexToEdit == -1)
+      throw new NotFoundException(`Post with id: ${id} not found!`);
+
+    this.posts[currentPostIndexToEdit] = {
+      ...this.posts[currentPostIndexToEdit],
+      ...updatePostData,
+      updatedAt: new Date(),
+    };
+
+    return this.posts[currentPostIndexToEdit];
+  }
+
+  private genNextId(): number {
+    return this.posts.length > 0
+      ? Math.max(...this.posts.map((post) => post.id)) + 1
+      : 1;
+  }
 }
